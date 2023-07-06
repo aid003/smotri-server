@@ -1,0 +1,48 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Video {
+  id             Int       @id @default(autoincrement())
+  title          String    @unique
+  ratingFilm     Float
+  postersUrl     String
+  yearCreate     Int
+  countries      Country[]
+  gendre         String
+  content        String
+  ageRestriction Int
+  description    String
+  actors         Actor[]
+  url            String
+  TitleSeo       String
+  DescriptionSeo String
+  published      Boolean   @default(true)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
+
+model Actor {
+  id       Int    @id @default(autoincrement())
+  fullName String
+  Video    Video? @relation(fields: [videoId], references: [id])
+  videoId  Int?
+}
+
+model Country {
+  id          Int    @id @default(autoincrement())
+  countryName String
+  Video       Video? @relation(fields: [videoId], references: [id])
+  videoId     Int?
+}
+
+model ActorProfile {
+  id        Int    @id @default(autoincrement())
+  fullName  String
+  posterUrl String
+}
