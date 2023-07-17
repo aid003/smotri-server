@@ -9,6 +9,7 @@ import {
   getFilmsAnkets,
 } from "./video/video.controller.js";
 import { downloadActor, findActorByName } from "./actor/actor.controller.js";
+import { downloadMoveFile, upload } from "./download/download.controller.js";
 
 const prisma = new PrismaClient();
 const app = express();
@@ -16,6 +17,7 @@ const app = express();
 async function main() {
   app.use(cors({ origin: "*" }));
   app.use(express.json());
+  app.use(express.urlencoded({ extended: true, limit: "4000000kb" }));
   app.use("/api/download-video/", downloadVideo);
   app.use("/api/get-films/", getAllPublishedFilms);
   app.use("/api/get-film/", getFilmByTitle);
@@ -23,9 +25,11 @@ async function main() {
   app.use("/api/get-films-ankets/", getFilmsAnkets);
 
   app.use("/api/actor/download-actor/", downloadActor);
-  app.use("/api/actor/find-by-name/", findActorByName)
+  app.use("/api/actor/find-by-name/", findActorByName);
 
-  const PORT = process.env.PORT || 5000;
+  app.post("/api/upload-video-file/", upload.single("file"), downloadMoveFile);
+
+  const PORT = 5005;
 
   app.listen(
     PORT,
