@@ -16,7 +16,7 @@ export const downloadVideo = asyncHandler(async (req, res) => {
     url,
     TitleSeo,
     DescriptionSeo,
-  } = req.body;
+  } = JSON.parse(req.body.information);
 
   const isHaveVideo = await prisma.video.findFirst({
     where: {
@@ -35,24 +35,26 @@ export const downloadVideo = asyncHandler(async (req, res) => {
       ratingFilm: ratingFilm,
       postersUrl: postersUrl,
       yearCreate: yearCreate,
-      countries: {
-        create: countries,
-      },
+      // countries: {
+      //   create: countries,
+      // },
+      countries: countries,
       gendre: gendre,
       content: content,
       ageRestriction: ageRestriction,
       description: description,
-      actors: {
-        create: actors,
-      },
+      // actors: {
+      //   create: actors,
+      // },
+      actors: actors,
       url: url,
       TitleSeo: TitleSeo,
       DescriptionSeo: DescriptionSeo,
     },
-    include: {
-      countries: true,
-      actors: true,
-    },
+    // include: {
+    //   countries: true,
+    //   actors: true,
+    // },
   });
 
   res.status(201);

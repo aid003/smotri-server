@@ -9,7 +9,7 @@ const storage = multer.diskStorage({
     cb(
       null,
       path.basename(file.originalname, ".mp4") +
-        "--" +
+        "-" +
         Date.now() +
         path.extname(file.originalname)
     );
@@ -22,7 +22,7 @@ export const upload = multer({
 });
 
 export const downloadMoveFile = (req, res) => {
-  console.log(req.body.names);
+  console.log(req.body.information);
   res.json({ msg: "loaded" });
   res.status(201);
 };

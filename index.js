@@ -18,7 +18,7 @@ async function main() {
   app.use(cors({ origin: "*" }));
   app.use(express.json());
   app.use(express.urlencoded({ extended: true, limit: "4000000kb" }));
-  app.use("/api/download-video/", downloadVideo);
+  // app.use("/api/download-video/", downloadVideo);
   app.use("/api/get-films/", getAllPublishedFilms);
   app.use("/api/get-film/", getFilmByTitle);
   app.use("/api/get-titles/", getAllTitles);
@@ -27,7 +27,12 @@ async function main() {
   app.use("/api/actor/download-actor/", downloadActor);
   app.use("/api/actor/find-by-name/", findActorByName);
 
-  app.post("/api/upload-video-file/", upload.single("file"), downloadMoveFile);
+  app.post(
+    "/api/upload-video-file/",
+    upload.single("file"),
+    // downloadMoveFile,
+    downloadVideo
+  );
 
   const PORT = 5005;
 

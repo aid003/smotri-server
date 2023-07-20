@@ -10,15 +10,15 @@ datasource db {
 model Video {
   id             Int       @id @default(autoincrement())
   title          String    @unique
-  ratingFilm     Float
+  ratingFilm     String
   postersUrl     String
-  yearCreate     Int
-  countries      Country[]
+  yearCreate     String
+  countries      String
   gendre         String
   content        String
-  ageRestriction Int
+  ageRestriction String
   description    String
-  actors         Actor[]
+  actors         String
   url            String
   TitleSeo       String
   DescriptionSeo String
@@ -27,22 +27,22 @@ model Video {
   updatedAt      DateTime  @updatedAt
 }
 
-model Actor {
-  id       Int    @id @default(autoincrement())
-  fullName String
-  Video    Video? @relation(fields: [videoId], references: [id])
-  videoId  Int?
-}
+// model Actor {
+//   id       Int    @id @default(autoincrement())
+//   fullName String
+//   Video    Video? @relation(fields: [videoId], references: [id])
+//   videoId  Int?
+// }
 
-model Country {
-  id          Int    @id @default(autoincrement())
-  countryName String
-  Video       Video? @relation(fields: [videoId], references: [id])
-  videoId     Int?
-}
+// model Country {
+//   id          Int    @id @default(autoincrement())
+//   countryName String
+//   Video       Video? @relation(fields: [videoId], references: [id])
+//   videoId     Int?
+// }
 
-model ActorProfile {
-  id        Int    @id @default(autoincrement())
-  fullName  String
-  posterUrl String
-}
+// model ActorProfile {
+//   id        Int    @id @default(autoincrement())
+//   fullName  String
+//   posterUrl String
+// }
