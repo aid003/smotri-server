@@ -22,7 +22,5 @@ export const upload = multer({
 });
 
 export const downloadMoveFile = (req, res) => {
-  console.log(req.body.information);
-  res.json({ msg: "loaded" });
-  res.status(201);
+  console.log(req.file.file);
 };

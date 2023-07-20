@@ -10,6 +10,7 @@ import {
 } from "./video/video.controller.js";
 import { downloadActor, findActorByName } from "./actor/actor.controller.js";
 import { downloadMoveFile, upload } from "./download/download.controller.js";
+import { streamingVideo } from "./video/streamingVideo/streaming.js";
 
 const prisma = new PrismaClient();
 const app = express();
@@ -27,10 +28,11 @@ async function main() {
   app.use("/api/actor/download-actor/", downloadActor);
   app.use("/api/actor/find-by-name/", findActorByName);
 
+  app.use("/films/", streamingVideo)
+
   app.post(
     "/api/upload-video-file/",
     upload.single("file"),
-    // downloadMoveFile,
     downloadVideo
   );
 

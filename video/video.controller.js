@@ -13,7 +13,6 @@ export const downloadVideo = asyncHandler(async (req, res) => {
     ageRestriction,
     description,
     actors,
-    url,
     TitleSeo,
     DescriptionSeo,
   } = JSON.parse(req.body.information);
@@ -47,7 +46,7 @@ export const downloadVideo = asyncHandler(async (req, res) => {
       //   create: actors,
       // },
       actors: actors,
-      url: url,
+      url: res.req.file.filename,
       TitleSeo: TitleSeo,
       DescriptionSeo: DescriptionSeo,
     },
