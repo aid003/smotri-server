@@ -11,7 +11,7 @@ export const downloadActor = asyncHandler(async (req, res) => {
     },
   });
 
-  res.status(201);
+  res.status(202);
   res.json(createActor);
 });
 

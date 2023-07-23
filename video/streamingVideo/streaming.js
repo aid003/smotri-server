@@ -19,7 +19,7 @@ export const streamingVideo = asyncHandler(async (req, res) => {
   const videoName = getFilm.url;
 
   const range = req.headers.range || "0";
-  const videoPath = `./public/video/${videoName}`;
+  const videoPath = `./public/films/${videoName}`;
   const videoSize = fs.statSync(videoPath).size;
   const chunkSize = 1 * 1e6;
   const start = Number(range.replace(/\D/g, ""));

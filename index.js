@@ -9,8 +9,9 @@ import {
   getFilmsAnkets,
 } from "./video/video.controller.js";
 import { downloadActor, findActorByName } from "./actor/actor.controller.js";
-import { downloadMoveFile, upload } from "./download/download.controller.js";
+import { upload } from "./download/downloadVideo.controller.js";
 import { streamingVideo } from "./video/streamingVideo/streaming.js";
+import { changePosterByTitle, uploadAvatar } from "./download/downloadAvatar.controller.js";
 
 const prisma = new PrismaClient();
 const app = express();
@@ -35,6 +36,9 @@ async function main() {
     upload.single("file"),
     downloadVideo
   );
+
+
+  app.post("/api/upload-avatar-for-video/", uploadAvatar.single("avatar"), changePosterByTitle)
 
   const PORT = 5005;
 

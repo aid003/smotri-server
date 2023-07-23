@@ -3,12 +3,12 @@ import path from "path";
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "public/video");
+    cb(null, "public/films");
   },
   filename: (req, file, cb) => {
     cb(
       null,
-      path.basename(file.originalname, ".mp4") +
+      path.parse(file.originalname).name +
         "-" +
         Date.now() +
         path.extname(file.originalname)
