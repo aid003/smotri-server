@@ -17,6 +17,7 @@ import {
   uploadAvatar,
 } from "./download/downloadAvatar.controller.js";
 import { registerUser } from "./users/users.controller.js";
+import cookieParser from "cookie-parser";
 
 const prisma = new PrismaClient();
 const app = express();
@@ -25,6 +26,7 @@ async function main() {
   app.use(cors({ origin: "*" }));
   app.use(express.json());
   app.use(express.urlencoded({ extended: true, limit: "4000000kb" }));
+  app.use(cookieParser())
   // app.use("/api/download-video/", downloadVideo);
   app.use("/api/get-films/", getAllPublishedFilms);
   app.use("/api/get-film/", getFilmByTitle);
