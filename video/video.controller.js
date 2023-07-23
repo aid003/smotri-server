@@ -140,3 +140,32 @@ export const getFilmsAnkets = asyncHandler(async (req, res) => {
   res.status(200);
   res.json(filmAnket);
 });
+
+export const deleteFilmByTitle = asyncHandler(async (req, res) => {
+  const { title } = req.body;
+
+  if (!title) {
+    res.status(400);
+    throw new Error("title not found");
+  }
+
+  const deleteFilm = await prisma.video.delete({
+    where: {
+      title: title,
+    },
+  });
+
+  res.status(200);
+  res.json(deleteFilm);
+});
+
+export const deleteAllPublishedFilms = asyncHandler(async (req, res) => {
+  const deleteFilms = await prisma.video.deleteMany({
+    where: {
+      published: true,
+    },
+  });
+
+  res.status(200);
+  res.json(deleteFilms);
+});

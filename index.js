@@ -2,16 +2,21 @@ import express from "express";
 import { PrismaClient } from "@prisma/client";
 import cors from "cors";
 import {
+  deleteAllPublishedFilms,
+  deleteFilmByTitle,
   downloadVideo,
   getAllPublishedFilms,
   getAllTitles,
   getFilmByTitle,
   getFilmsAnkets,
 } from "./video/video.controller.js";
-import { downloadActor, findActorByName } from "./actor/actor.controller.js";
 import { upload } from "./download/downloadVideo.controller.js";
 import { streamingVideo } from "./video/streamingVideo/streaming.js";
-import { changePosterByTitle, uploadAvatar } from "./download/downloadAvatar.controller.js";
+import {
+  changePosterByTitle,
+  uploadAvatar,
+} from "./download/downloadAvatar.controller.js";
+import { registerUser } from "./users/users.controller.js";
 
 const prisma = new PrismaClient();
 const app = express();
@@ -25,20 +30,20 @@ async function main() {
   app.use("/api/get-film/", getFilmByTitle);
   app.use("/api/get-titles/", getAllTitles);
   app.use("/api/get-films-ankets/", getFilmsAnkets);
+  app.use("/api/delete-film-by-title/", deleteFilmByTitle);
+  app.use("/api/delete-all-published-films/", deleteAllPublishedFilms);
 
-  app.use("/api/actor/download-actor/", downloadActor);
-  app.use("/api/actor/find-by-name/", findActorByName);
+  app.use("/films/", streamingVideo);
 
-  app.use("/films/", streamingVideo)
+  app.post("/api/upload-video-file/", upload.single("file"), downloadVideo);
 
   app.post(
-    "/api/upload-video-file/",
-    upload.single("file"),
-    downloadVideo
+    "/api/upload-avatar-for-video/",
+    uploadAvatar.single("avatar"),
+    changePosterByTitle
   );
 
-
-  app.post("/api/upload-avatar-for-video/", uploadAvatar.single("avatar"), changePosterByTitle)
+  app.use("/api/register-user/", registerUser)
 
   const PORT = 5005;
 
