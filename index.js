@@ -1,6 +1,7 @@
 import express from "express";
 import { PrismaClient } from "@prisma/client";
 import cors from "cors";
+import dotenv from "dotenv";
 import {
   deleteAllPublishedFilms,
   deleteFilmByTitle,
@@ -16,17 +17,20 @@ import {
   changePosterByTitle,
   uploadAvatar,
 } from "./download/downloadAvatar.controller.js";
-import { registerUser } from "./users/users.controller.js";
+import { loginUserWithEmail, loginUserWithToken, registerUser } from "./users/users.controller.js";
 import cookieParser from "cookie-parser";
+import morgan from "morgan";
 
 const prisma = new PrismaClient();
 const app = express();
+dotenv.config();
 
 async function main() {
   app.use(cors({ origin: "*" }));
   app.use(express.json());
   app.use(express.urlencoded({ extended: true, limit: "4000000kb" }));
-  app.use(cookieParser())
+  app.use(cookieParser());
+  app.use(morgan("tiny"))
   // app.use("/api/download-video/", downloadVideo);
   app.use("/api/get-films/", getAllPublishedFilms);
   app.use("/api/get-film/", getFilmByTitle);
@@ -45,7 +49,9 @@ async function main() {
     changePosterByTitle
   );
 
-  app.use("/api/register-user/", registerUser)
+  app.use("/api/register-user/", registerUser);
+  app.use("/api/login-user-with-token/", loginUserWithToken)
+  app.use("/api/login-user-with-login/", loginUserWithEmail)
 
   const PORT = 5005;
 

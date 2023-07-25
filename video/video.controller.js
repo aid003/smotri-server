@@ -1,5 +1,7 @@
-import { prisma } from "../prisma/prisma.js";
 import asyncHandler from "express-async-handler";
+import { prisma } from "../prisma/prisma.js";
+import path from 'path'
+import fs from 'fs'
 
 export const downloadVideo = asyncHandler(async (req, res) => {
   const {
@@ -155,6 +157,13 @@ export const deleteFilmByTitle = asyncHandler(async (req, res) => {
     },
   });
 
+  try {
+    const filePath = `./public/films/${deleteFilm.url}`
+    fs.unlinkSync(filePath);
+  } catch (error) {
+    res.status(400).json({success: false})
+  }
+
   res.status(200);
   res.json(deleteFilm);
 });
@@ -164,6 +173,18 @@ export const deleteAllPublishedFilms = asyncHandler(async (req, res) => {
     where: {
       published: true,
     },
+  });
+
+  const directory = "./public/films/";
+
+  fs.readdir(directory, (err, files) => {
+    if (err) throw err;
+
+    for (const file of files) {
+      fs.unlink(path.join(directory, file), (err) => {
+        if (err) throw err;
+      });
+    }
   });
 
   res.status(200);
