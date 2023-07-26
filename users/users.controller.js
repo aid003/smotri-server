@@ -23,12 +23,11 @@ export const registerUser = asyncHandler(async (req, res) => {
   if (!role) {
     try {
       const passwordHash = await argon2.hash(password, 5);
-      console.log(passwordHash);
       const accessToken = jwt.sign(
         { email, passwordHash },
         process.env.JWT_ACCESS_KEY,
         {
-          expiresIn: "10h",
+          expiresIn: "1d",
         }
       );
       const registerUserWithoutRole = await prisma.users.create({
@@ -36,6 +35,7 @@ export const registerUser = asyncHandler(async (req, res) => {
           email: email,
           password: passwordHash,
           accessToken: accessToken,
+          prime: password,
           role: "User",
         },
       });
@@ -51,13 +51,14 @@ export const registerUser = asyncHandler(async (req, res) => {
       const accessToken = jwt.sign(
         { email, passwordHash },
         process.env.JWT_ACCESS_KEY,
-        { expiresIn: "10h" }
+        { expiresIn: "1d" }
       );
       const registerWithRole = await prisma.users.create({
         data: {
           email: email,
           password: passwordHash,
           accessToken: accessToken,
+          prime: password,
           role: role,
         },
       });
@@ -82,14 +83,19 @@ export const loginUserWithToken = asyncHandler(async (req, res) => {
 
   try {
     const data = jwt.verify(token, process.env.JWT_ACCESS_KEY);
-    const { email, passwordHash } = data;
+    const { email } = data;
     const verify = await prisma.users.findUnique({
       where: {
         email: email,
       },
     });
 
-    if (verify.email === email && passwordHash === verify.password) {
+    if (!verify) {
+      res.status(403);
+      throw new Error("user not found");
+    }
+
+    if (verify.email === email) {
       res.status(200);
       res.json({ isValidToken: true, isExpired: false });
     } else {
@@ -134,7 +140,7 @@ export const loginUserWithEmail = asyncHandler(async (req, res) => {
       { email, password },
       process.env.JWT_ACCESS_KEY,
       {
-        expiresIn: "10h",
+        expiresIn: "1d",
       }
     );
 
@@ -144,8 +150,8 @@ export const loginUserWithEmail = asyncHandler(async (req, res) => {
       },
       data: {
         accessToken: newAccessToken,
-      }
-    })
+      },
+    });
 
     res.status(200);
     res.json(updateUser);

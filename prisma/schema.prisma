@@ -33,6 +33,7 @@ model Users {
   password String
   role String
   accessToken String
+  prime String
   reatedAt       DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
 }
