@@ -37,7 +37,6 @@ export const changePosterByTitle = asyncHandler(async (req, res) => {
       },
     });
     res.status(201);
-    console.log("gbhnjmk")
     res.json(updatePosterUrl);
   } catch {
     res.status(400);

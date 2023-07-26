@@ -5,11 +5,13 @@ import jwt from "jsonwebtoken";
 
 export const registerUser = asyncHandler(async (req, res) => {
   const { email, password, role } = req.body;
+
   if (!email || !password) {
     res.status(400);
     throw new Error("Server dont get registration information");
   }
-  const isHaveEmail = await prisma.users.findFirst({
+
+  const isHaveEmail = await prisma.users.findUnique({
     where: {
       email: email,
     },
@@ -39,7 +41,6 @@ export const registerUser = asyncHandler(async (req, res) => {
       });
       res.status(201);
       res.json(registerUserWithoutRole);
-      
     } catch (error) {
       res.status(400);
       throw new Error(`Error in register user with out Role: ${error}`);
@@ -62,7 +63,6 @@ export const registerUser = asyncHandler(async (req, res) => {
       });
       res.status(201);
       res.json(registerWithRole);
-
     } catch (error) {
       res.status(400);
       throw new Error("Error in create user with role");
@@ -79,7 +79,7 @@ export const loginUserWithToken = asyncHandler(async (req, res) => {
   } else {
     token = req.body.token;
   }
-  
+
   try {
     const data = jwt.verify(token, process.env.JWT_ACCESS_KEY);
     const { email, passwordHash } = data;
@@ -101,7 +101,7 @@ export const loginUserWithToken = asyncHandler(async (req, res) => {
       ? res.status(402).json({ isValidToken: false, isExpired: true })
       : "";
     res.status(400);
-    throw new Error(`Error in authorization`);
+    throw new Error(`Error in authtorization`);
   }
 });
 
@@ -130,8 +130,25 @@ export const loginUserWithEmail = asyncHandler(async (req, res) => {
       throw new Error("Incorrect email or password");
     }
 
+    const newAccessToken = jwt.sign(
+      { email, password },
+      process.env.JWT_ACCESS_KEY,
+      {
+        expiresIn: "10h",
+      }
+    );
+
+    const updateUser = await prisma.users.update({
+      where: {
+        email: email,
+      },
+      data: {
+        accessToken: newAccessToken,
+      }
+    })
+
     res.status(200);
-    res.json(validateUser);
+    res.json(updateUser);
   } catch (error) {
     res.status(403);
     throw new Error("Fail to login");
