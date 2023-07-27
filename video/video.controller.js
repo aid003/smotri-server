@@ -1,7 +1,7 @@
 import asyncHandler from "express-async-handler";
 import { prisma } from "../prisma/prisma.js";
-import path from 'path'
-import fs from 'fs'
+import path from "path";
+import fs from "fs";
 
 export const downloadVideo = asyncHandler(async (req, res) => {
   const {
@@ -158,10 +158,10 @@ export const deleteFilmByTitle = asyncHandler(async (req, res) => {
   });
 
   try {
-    const filePath = `./public/films/${deleteFilm.url}`
+    const filePath = `./public/films/${deleteFilm.url}`;
     fs.unlinkSync(filePath);
   } catch (error) {
-    res.status(400).json({success: false})
+    res.status(400).json({ success: false });
   }
 
   res.status(200);
@@ -189,4 +189,20 @@ export const deleteAllPublishedFilms = asyncHandler(async (req, res) => {
 
   res.status(200);
   res.json(deleteFilms);
+});
+
+export const getAllFields = asyncHandler(async (req, res) => {
+  res.status(200).json({
+    data: "title,ratingFilm,postersUrl,yearCreate,countries,gendre,content,ageRestriction,description,actors,urlTitleSeo,DescriptionSeo,published",
+  });
+});
+
+export const changeFildsToFilm = asyncHandler(async (req, res) => {
+  const { title, value } = req.body;
+
+  if (!title || !value) {
+    res.status(400).json({ message: "Missed title or value" });
+  }
+
+  console.log(title, value);
 });

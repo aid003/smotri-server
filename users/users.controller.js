@@ -170,7 +170,7 @@ export const getUserInfo = asyncHandler(async (req, res) => {
 
   if (!token) {
     res.status(400).json({ success: false });
-    return;
+    return;                           
   }
 
   const userInfo = await prisma.users.findUnique({

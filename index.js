@@ -6,6 +6,7 @@ import {
   deleteAllPublishedFilms,
   deleteFilmByTitle,
   downloadVideo,
+  getAllFields,
   getAllPublishedFilms,
   getAllTitles,
   getFilmByTitle,
@@ -17,7 +18,12 @@ import {
   changePosterByTitle,
   uploadAvatar,
 } from "./download/downloadAvatar.controller.js";
-import { getUserInfo, loginUserWithEmail, loginUserWithToken, registerUser } from "./users/users.controller.js";
+import {
+  getUserInfo,
+  loginUserWithEmail,
+  loginUserWithToken,
+  registerUser,
+} from "./users/users.controller.js";
 import cookieParser from "cookie-parser";
 import morgan from "morgan";
 
@@ -30,14 +36,14 @@ async function main() {
   app.use(express.json());
   app.use(express.urlencoded({ extended: true, limit: "4000000kb" }));
   app.use(cookieParser());
-  app.use(morgan("tiny"))
-  // app.use("/api/download-video/", downloadVideo);
+  app.use(morgan("tiny"));
   app.use("/api/get-films/", getAllPublishedFilms);
   app.use("/api/get-film/", getFilmByTitle);
   app.use("/api/get-titles/", getAllTitles);
   app.use("/api/get-films-ankets/", getFilmsAnkets);
   app.use("/api/delete-film-by-title/", deleteFilmByTitle);
   app.use("/api/delete-all-published-films/", deleteAllPublishedFilms);
+  app.use("/api/get-all-feilds/", getAllFields);
 
   app.use("/films/", streamingVideo);
 
@@ -50,9 +56,9 @@ async function main() {
   );
 
   app.use("/api/register-user/", registerUser);
-  app.use("/api/login-user-with-token/", loginUserWithToken)
-  app.use("/api/login-user-with-login/", loginUserWithEmail)
-  app.use("/api/get-user-info", getUserInfo)
+  app.use("/api/login-user-with-token/", loginUserWithToken);
+  app.use("/api/login-user-with-login/", loginUserWithEmail);
+  app.use("/api/get-user-info", getUserInfo);
 
   const PORT = 5005;
 
