@@ -17,7 +17,7 @@ import {
   changePosterByTitle,
   uploadAvatar,
 } from "./download/downloadAvatar.controller.js";
-import { loginUserWithEmail, loginUserWithToken, registerUser } from "./users/users.controller.js";
+import { getUserInfo, loginUserWithEmail, loginUserWithToken, registerUser } from "./users/users.controller.js";
 import cookieParser from "cookie-parser";
 import morgan from "morgan";
 
@@ -52,6 +52,7 @@ async function main() {
   app.use("/api/register-user/", registerUser);
   app.use("/api/login-user-with-token/", loginUserWithToken)
   app.use("/api/login-user-with-login/", loginUserWithEmail)
+  app.use("/api/get-user-info", getUserInfo)
 
   const PORT = 5005;
 

@@ -81,6 +81,10 @@ export const loginUserWithToken = asyncHandler(async (req, res) => {
     token = req.body.token;
   }
 
+  if (!token) {
+    res.status(400).json({ isValidToken: false, isExpired: false });
+  }
+
   try {
     const data = jwt.verify(token, process.env.JWT_ACCESS_KEY);
     const { email } = data;
@@ -97,7 +101,7 @@ export const loginUserWithToken = asyncHandler(async (req, res) => {
 
     if (verify.email === email) {
       res.status(200);
-      res.json({ isValidToken: true, isExpired: false });
+      res.json({ isValidToken: true, isExpired: false, role: verify.role });
     } else {
       res.status(403);
       res.json({ isValidToken: false, isExpired: false });
@@ -159,4 +163,21 @@ export const loginUserWithEmail = asyncHandler(async (req, res) => {
     res.status(403);
     throw new Error("Fail to login");
   }
+});
+
+export const getUserInfo = asyncHandler(async (req, res) => {
+  const { token } = req.body;
+
+  if (!token) {
+    res.status(400).json({ success: false });
+    return;
+  }
+
+  const userInfo = await prisma.users.findUnique({
+    where: {
+      accessToken: token,
+    },
+  });
+
+  res.status(200).json(userInfo);
 });
