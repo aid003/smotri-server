@@ -36,26 +36,16 @@ export const downloadVideo = asyncHandler(async (req, res) => {
       ratingFilm: ratingFilm,
       postersUrl: postersUrl,
       yearCreate: yearCreate,
-      // countries: {
-      //   create: countries,
-      // },
       countries: countries,
       gendre: gendre,
       content: content,
       ageRestriction: ageRestriction,
       description: description,
-      // actors: {
-      //   create: actors,
-      // },
       actors: actors,
       url: res.req.file.filename,
       TitleSeo: TitleSeo,
       DescriptionSeo: DescriptionSeo,
-    },
-    // include: {
-    //   countries: true,
-    //   actors: true,
-    // },
+    }
   });
 
   res.status(201);
@@ -198,11 +188,45 @@ export const getAllFields = asyncHandler(async (req, res) => {
 });
 
 export const changeFildsToFilm = asyncHandler(async (req, res) => {
-  const { title, value } = req.body;
+  const { title, field, value } = req.body;
 
-  if (!title || !value) {
-    res.status(400).json({ message: "Missed title or value" });
+  console.log(title, field, value);
+
+  if (!title || !value || !field) {
+    res.status(400).json({ message: "Missed title or value or field" });
   }
 
-  console.log(title, value);
+  try {
+    const updateInfo = await prisma.video.update({
+      where: {
+        title: title,
+      },
+      data: {
+        [field]: value,
+      },
+    });
+
+    if (!updateInfo) {
+      res.status(400).json({ success: false });
+    }
+
+    res.status(201).json(updateInfo);
+  } catch (error) {
+    if (error.name === "PrismaClientValidationError") {
+      const updateInfo = await prisma.video.update({
+        where: {
+          title: title,
+        },
+        data: {
+          [field]: value === 'true' ? true : false,
+        },
+      });
+
+      if (!updateInfo) {
+        res.status(400).json({ success: false });
+      }
+
+      res.status(201).json(updateInfo);
+    };
+  }
 });

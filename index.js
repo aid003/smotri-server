@@ -3,6 +3,7 @@ import { PrismaClient } from "@prisma/client";
 import cors from "cors";
 import dotenv from "dotenv";
 import {
+  changeFildsToFilm,
   deleteAllPublishedFilms,
   deleteFilmByTitle,
   downloadVideo,
@@ -44,6 +45,7 @@ async function main() {
   app.use("/api/delete-film-by-title/", deleteFilmByTitle);
   app.use("/api/delete-all-published-films/", deleteAllPublishedFilms);
   app.use("/api/get-all-feilds/", getAllFields);
+  app.use("/api/change-film-fields/", changeFildsToFilm);
 
   app.use("/films/", streamingVideo);
 
