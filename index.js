@@ -27,6 +27,7 @@ import {
 } from "./users/users.controller.js";
 import cookieParser from "cookie-parser";
 import morgan from "morgan";
+import { uploadPoster } from "./posters/posters.js";
 
 const prisma = new PrismaClient();
 const app = express();
@@ -38,6 +39,7 @@ async function main() {
   app.use(express.urlencoded({ extended: true, limit: "4000000kb" }));
   app.use(cookieParser());
   app.use(morgan("tiny"));
+  app.use(express.static("/public"));
   app.use("/api/get-films/", getAllPublishedFilms);
   app.use("/api/get-film/", getFilmByTitle);
   app.use("/api/get-titles/", getAllTitles);
@@ -46,6 +48,7 @@ async function main() {
   app.use("/api/delete-all-published-films/", deleteAllPublishedFilms);
   app.use("/api/get-all-feilds/", getAllFields);
   app.use("/api/change-film-fields/", changeFildsToFilm);
+  app.use("/api/upload-films-poster-to-url/", uploadPoster);
 
   app.use("/films/", streamingVideo);
 
