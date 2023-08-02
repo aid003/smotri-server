@@ -9,5 +9,6 @@ const __dirname = dirname(__filename);
 
 export const uploadPoster = asyncHandler(async (req, res) => {
   const { posterUrl } = req.body;
+  console.log(req.query)
   res.sendFile(path.join(__dirname, "../public/posters", `${posterUrl}`));
 });
