@@ -7,7 +7,10 @@ export const downloadVideo = asyncHandler(async (req, res) => {
   const {
     title,
     ratingFilm,
-    postersUrl,
+    novelty,
+    preview,
+    qualityUrls,
+    voiceActing,
     yearCreate,
     countries,
     gendre,
@@ -45,7 +48,7 @@ export const downloadVideo = asyncHandler(async (req, res) => {
       url: res.req.file.filename,
       TitleSeo: TitleSeo,
       DescriptionSeo: DescriptionSeo,
-    }
+    },
   });
 
   res.status(201);
@@ -56,6 +59,9 @@ export const getAllPublishedFilms = asyncHandler(async (req, res) => {
   const getFilms = await prisma.video.findMany({
     where: {
       published: true,
+    },
+    include: {
+      qualityUrls: true,
     },
   });
 
@@ -218,7 +224,7 @@ export const changeFildsToFilm = asyncHandler(async (req, res) => {
           title: title,
         },
         data: {
-          [field]: value === 'true' ? true : false,
+          [field]: value === "true" ? true : false,
         },
       });
 
@@ -227,6 +233,6 @@ export const changeFildsToFilm = asyncHandler(async (req, res) => {
       }
 
       res.status(201).json(updateInfo);
-    };
+    }
   }
 });

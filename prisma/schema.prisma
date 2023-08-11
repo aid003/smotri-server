@@ -11,7 +11,9 @@ model Video {
   id             Int       @id @default(autoincrement())
   title          String    @unique
   ratingFilm     String
+  novelty        String   
   postersUrl     String
+  preview        String
   yearCreate     String
   countries      String
   gendre         String
@@ -19,7 +21,7 @@ model Video {
   ageRestriction String
   description    String
   actors         String
-  url            String
+  qualityUrls    Urls[]
   TitleSeo       String
   DescriptionSeo String
   published      Boolean   @default(true)
@@ -36,4 +38,14 @@ model Users {
   prime String
   reatedAt       DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
+}
+
+model Urls {
+  id            Int       @id @default(autoincrement())
+  quality       String
+  url           String 
+  voiceActing   String   
+  video         Video?     @relation(fields: [videoId], references: [id]) 
+  videoId       Int?
+ 
 }
