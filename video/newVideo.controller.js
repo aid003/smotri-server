@@ -2,8 +2,7 @@ import asyncHandler from "express-async-handler";
 import { prisma } from "../prisma/prisma.js";
 
 export const createNewFilmEntryToDb = asyncHandler(async (req, res) => {
-
-  console.log(req.body)
+  console.log(req.body);
 
   const {
     title,
@@ -47,7 +46,9 @@ export const createNewFilmEntryToDb = asyncHandler(async (req, res) => {
       actors: actors,
       novelty: novelty,
       preview: preview,
-      qualityUrls: { create: { url: "default", quality: "default", voiceActing: "default" } }, // default value for create entry
+      qualityUrls: {
+        create: { url: "default", quality: "default", voiceActing: "default" },
+      }, // default value for create entry
       TitleSeo: TitleSeo,
       DescriptionSeo: DescriptionSeo,
     },
@@ -61,30 +62,39 @@ export const createNewFilmEntryToDb = asyncHandler(async (req, res) => {
 });
 
 export const addFilms = asyncHandler(async (req, res) => {
-  console
+  console;
   const { title, quality, voiceActing } = JSON.parse(req.body.information);
 
   if (!title || !quality || !voiceActing) {
     throw new Error("Dont get params");
   }
 
-  const addFilmsQuality = await prisma.video.update({
-    where: {
-      title: title,
-    },
-    data: {
-      qualityUrls: {
-        create: {
-          quality: quality,
-          voiceActing: voiceActing,
-          url: res.req.file.filename,
+  try {
+    const addFilmsQuality = await prisma.video.update({
+      where: {
+        title: title,
+      },
+      data: {
+        qualityUrls: {
+          create: {
+            quality: toString(quality),
+            voiceActing: voiceActing,
+            url: res.req.file.filename,
+          },
         },
       },
-    },
-    include: {
-      qualityUrls: true,
-    },
-  });
+      include: {
+        qualityUrls: true,
+      },
+    });
+
+    res.status(201);
+    res.json(addFilmsQuality);
+
+  } catch (error) {
+    res.status(400);
+    throw new Error("error");
+  }
 
   // const deleteInitializationParams = await prisma.video.delete({
   //   where: {
@@ -96,7 +106,4 @@ export const addFilms = asyncHandler(async (req, res) => {
   //     }
   //   }
   // })
-
-  res.status(201)
-  res.json(addFilmsQuality)
 });
