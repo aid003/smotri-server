@@ -28,7 +28,7 @@ import {
 import cookieParser from "cookie-parser";
 import morgan from "morgan";
 import { uploadPoster } from "./posters/posters.js";
-import { addFilms, createNewFilmEntryToDb } from "./video/newVideo.controller.js";
+import { addFilms, createNewFilmEntryToDb, downloadMorePhotos, downloadPreview } from "./video/newVideo.controller.js";
 
 const prisma = new PrismaClient();
 const app = express();
@@ -55,6 +55,8 @@ async function main() {
 
   app.post("/api/upload-video-file/", upload.single("file"), downloadVideo);
   app.post("/api/new/", upload.single("file"), addFilms)
+  app.post("/api/upload-preview-file/", upload.single("file"), downloadPreview)
+  app.post("/api/upload-more-photos/", uploadAvatar.single("file"), downloadMorePhotos)
 
 
   app.post("/api/test-create-entry/", createNewFilmEntryToDb)

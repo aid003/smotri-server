@@ -62,7 +62,6 @@ export const createNewFilmEntryToDb = asyncHandler(async (req, res) => {
 });
 
 export const addFilms = asyncHandler(async (req, res) => {
-  console;
   const { title, quality, voiceActing } = JSON.parse(req.body.information);
 
   if (!title || !quality || !voiceActing) {
@@ -90,7 +89,6 @@ export const addFilms = asyncHandler(async (req, res) => {
 
     res.status(201);
     res.json(addFilmsQuality);
-
   } catch (error) {
     res.status(400);
     throw new Error("error");
@@ -106,4 +104,59 @@ export const addFilms = asyncHandler(async (req, res) => {
   //     }
   //   }
   // })
+});
+
+export const downloadPreview = asyncHandler(async (req, res) => {
+  const { title } = JSON.parse(req.body.information);
+
+  if (!title) {
+    res.status(400);
+    throw new Error("title dont get");
+  }
+
+  try {
+    const preview = await prisma.video.update({
+      where: {
+        title: title,
+      },
+      data: {
+        preview: res.req.file.filename,
+      },
+    });
+
+    res.status(201);
+    res.json(preview);
+  } catch (error) {
+    res.status(400);
+    throw new Error("Error in load to db");
+  }
+});
+
+export const downloadMorePhotos = asyncHandler(async (req, res) => {
+  const { title } = JSON.parse(req.body.information);
+
+  if (!title) {
+    res.status(400);
+    throw new Error("title dont get");
+  }
+
+  try {
+    const photos = await prisma.video.update({
+      where: {
+        title: title,
+      },
+      data: {
+        preview: res.req.file.filename,
+      },
+    });
+
+    res.status(201);
+    res.json(photos);
+  } catch (error) {
+    res.status(400);
+    throw new Error("Error in load to db");
+  }
+
+
+
 });
