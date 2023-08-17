@@ -3,20 +3,27 @@ import { prisma } from "../../prisma/prisma.js";
 import fs from "fs";
 
 export const streamingVideo = asyncHandler(async (req, res) => {
-  const { title } = req.query;
+  const { title, quality } = req.query;
 
-  const getFilm = await prisma.video.findUnique({
-    where: {
+  const getFilm = await prisma.video.findFirst({
+    select: {
       title: title,
+      qualityUrls: {
+        where: {
+          quality: quality,
+        },
+      },
     },
   });
+
+  // console.log(getFilm.qualityUrls[0].url)
 
   if (getFilm === null) {
     res.status(400);
     throw new Error("Video not found");
   }
 
-  const videoName = getFilm.url;
+  const videoName = getFilm.qualityUrls[0].url;
 
   const range = req.headers.range || "0";
   const videoPath = `./public/films/${videoName}`;

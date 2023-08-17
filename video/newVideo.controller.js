@@ -65,6 +65,7 @@ export const addFilms = asyncHandler(async (req, res) => {
   const { title, quality, voiceActing } = JSON.parse(req.body.information);
 
   if (!title || !quality || !voiceActing) {
+    res.status(400);
     throw new Error("Dont get params");
   }
 
@@ -76,7 +77,7 @@ export const addFilms = asyncHandler(async (req, res) => {
       data: {
         qualityUrls: {
           create: {
-            quality: toString(quality),
+            quality: quality,
             voiceActing: voiceActing,
             url: res.req.file.filename,
           },
@@ -156,7 +157,4 @@ export const downloadMorePhotos = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("Error in load to db");
   }
-
-
-
 });

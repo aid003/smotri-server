@@ -16,15 +16,16 @@ model Video {
   preview        String?
   photo          String?
   yearCreate     String
+  duration       String
   countries      String
   gendre         String
-  content        String?
+  content        String
   ageRestriction String
-  description    String?
+  description    String
   actors         String
   qualityUrls    Urls[]
-  TitleSeo       String?
-  DescriptionSeo String?
+  TitleSeo       String
+  DescriptionSeo String
   published      Boolean   @default(true)
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
