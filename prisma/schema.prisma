@@ -14,7 +14,7 @@ model Video {
   novelty        String   
   postersUrl     String
   preview        String?
-  photo          String?
+  photo          String   @default("default")
   yearCreate     String
   duration       String
   countries      String

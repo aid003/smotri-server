@@ -15,6 +15,7 @@ export const createNewFilmEntryToDb = asyncHandler(async (req, res) => {
     gendre,
     content,
     ageRestriction,
+    duration,
     description,
     actors,
     TitleSeo,
@@ -46,6 +47,7 @@ export const createNewFilmEntryToDb = asyncHandler(async (req, res) => {
       actors: actors,
       novelty: novelty,
       preview: preview,
+      duration: duration,
       qualityUrls: {
         create: { url: "default", quality: "default", voiceActing: "default" },
       }, // default value for create entry
@@ -147,7 +149,7 @@ export const downloadMorePhotos = asyncHandler(async (req, res) => {
         title: title,
       },
       data: {
-        preview: res.req.file.filename,
+        photo: res.req.file.filename,
       },
     });
 
@@ -155,6 +157,6 @@ export const downloadMorePhotos = asyncHandler(async (req, res) => {
     res.json(photos);
   } catch (error) {
     res.status(400);
-    throw new Error("Error in load to db");
+    throw new Error(`${error}`);
   }
 });
