@@ -77,9 +77,13 @@ export const getFilmByTitle = asyncHandler(async (req, res) => {
     throw new Error("Invalid query parametr");
   }
 
+
   const getFilm = await prisma.video.findUnique({
     where: {
       title: title,
+    },
+    include: {
+      qualityUrls: true,
     },
   });
 

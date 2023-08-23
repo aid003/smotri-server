@@ -1,6 +1,8 @@
 import asyncHandler from "express-async-handler";
 import { prisma } from "../prisma/prisma.js";
 
+// FIXME: 
+
 export const createNewFilmEntryToDb = asyncHandler(async (req, res) => {
   console.log(req.body);
 
@@ -45,17 +47,13 @@ export const createNewFilmEntryToDb = asyncHandler(async (req, res) => {
       ageRestriction: ageRestriction,
       description: description,
       actors: actors,
+      // qualityUrls: { 
+      //   create: { url: "default", quality: "default", voiceActing: "default" },
+      // },
       novelty: novelty,
-      preview: preview,
       duration: duration,
-      qualityUrls: {
-        create: { url: "default", quality: "default", voiceActing: "default" },
-      }, // default value for create entry
       TitleSeo: TitleSeo,
       DescriptionSeo: DescriptionSeo,
-    },
-    include: {
-      qualityUrls: true,
     },
   });
 
@@ -69,7 +67,9 @@ export const addFilms = asyncHandler(async (req, res) => {
   if (!title || !quality || !voiceActing) {
     res.status(400);
     throw new Error("Dont get params");
-  }
+  } 
+
+  console.log(title, quality, voiceActing)
 
   try {
     const addFilmsQuality = await prisma.video.update({
@@ -94,7 +94,7 @@ export const addFilms = asyncHandler(async (req, res) => {
     res.json(addFilmsQuality);
   } catch (error) {
     res.status(400);
-    throw new Error("error");
+    throw new Error(`error ${error}`);
   }
 
   // const deleteInitializationParams = await prisma.video.delete({
@@ -155,6 +155,34 @@ export const downloadMorePhotos = asyncHandler(async (req, res) => {
 
     res.status(201);
     res.json(photos);
+  } catch (error) {
+    res.status(400);
+    throw new Error(`${error}`);
+  }
+});
+
+export const getAllFilmsTitles = asyncHandler(async (req, res) => {
+  const { title } = req.query;
+
+  if (!title) {
+    res.status(400);
+    throw new Error("title dont get");
+  }
+
+  try {
+    const videoTitles = await prisma.video.findFirst({
+      where: {
+        title: title,
+      },
+      include: {
+        qualityUrls: true,
+      },
+    });
+
+    console.log(videoTitles);
+
+    res.json(videoTitles);
+    res.status(200);
   } catch (error) {
     res.status(400);
     throw new Error(`${error}`);

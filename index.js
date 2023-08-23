@@ -28,7 +28,14 @@ import {
 import cookieParser from "cookie-parser";
 import morgan from "morgan";
 import { uploadPoster } from "./posters/posters.js";
-import { addFilms, createNewFilmEntryToDb, downloadMorePhotos, downloadPreview } from "./video/newVideo.controller.js";
+import {
+  addFilms,
+  createNewFilmEntryToDb,
+  downloadMorePhotos,
+  downloadPreview,
+  getAllFilmsTitles,
+} from "./video/newVideo.controller.js";
+import { streamingPreview } from "./video/streamingVideo/streamingPreview.js";
 
 const prisma = new PrismaClient();
 const app = express();
@@ -51,15 +58,21 @@ async function main() {
   app.use("/api/change-film-fields/", changeFildsToFilm);
   app.use("/api/upload-films-poster-to-url/", uploadPoster);
 
+  app.use("/api/filmi/quality/", getAllFilmsTitles)
+
   app.use("/films/", streamingVideo);
+  app.use("/film/preview/", streamingPreview);
 
   app.post("/api/upload-video-file/", upload.single("file"), downloadVideo);
-  app.post("/api/new/", upload.single("file"), addFilms)
-  app.post("/api/upload-preview-file/", upload.single("file"), downloadPreview)
-  app.post("/api/upload-more-photos/", uploadAvatar.single("file"), downloadMorePhotos)
+  app.post("/api/new/", upload.single("file"), addFilms);
+  app.post("/api/upload-preview-file/", upload.single("file"), downloadPreview);
+  app.post(
+    "/api/upload-more-photos/",
+    uploadAvatar.single("file"),
+    downloadMorePhotos
+  );
 
-
-  app.post("/api/test-create-entry/", createNewFilmEntryToDb)
+  app.post("/api/test-create-entry/", createNewFilmEntryToDb);
 
   app.post(
     "/api/upload-avatar-for-video/",
@@ -91,3 +104,4 @@ main()
     await prisma.$disconnect();
     process.exit(1);
   });
+
