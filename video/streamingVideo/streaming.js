@@ -5,6 +5,12 @@ import fs from "fs";
 export const streamingVideo = asyncHandler(async (req, res) => {
   const { title, quality } = req.query;
 
+  console.log(title, quality);
+  if (!title || !quality) {
+    res.status(400);
+    throw new Error("invalid data");
+  }
+
   const getFilm = await prisma.video.findFirst({
     select: {
       title: title,
@@ -16,7 +22,7 @@ export const streamingVideo = asyncHandler(async (req, res) => {
     },
   });
 
-  // console.log(getFilm.qualityUrls[0].url)
+  console.log(getFilm);
 
   if (getFilm === null) {
     res.status(400);
