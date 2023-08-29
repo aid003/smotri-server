@@ -26,6 +26,13 @@ model Video {
   qualityUrls    Urls[]
   TitleSeo       String
   DescriptionSeo String
+  KeywordsSeo    String?
+  applicationNameSeo String?
+  generatorSeo   String?
+  referrerSeo    String?
+  colorSchemeSeo String?
+  creatorSeo     String?
+  publisherSeo   String?
   published      Boolean   @default(true)
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
