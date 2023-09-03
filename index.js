@@ -44,7 +44,7 @@ dotenv.config();
 async function main() {
   app.use(cors({ origin: "*" }));
   app.use(express.json());
-  app.use(express.urlencoded({ extended: true, limit: "4000000kb" }));
+  app.use(express.urlencoded({ extended: false, limit: "4000000kb" }));
   app.use(cookieParser());
   app.use(morgan("tiny"));
   app.use(express.static("/public"));
