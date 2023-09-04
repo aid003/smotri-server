@@ -4,12 +4,12 @@ import { prisma } from "../prisma/prisma.js";
 export const chekAllFields = asyncHandler(async (req, res) => {
   const { title } = req.body;
 
-  const feilds = await prisma.video.findUnique({
+  const feilds = await prisma.video.findMany({
     where: {
       title: title,
-      include: {
-        qualityUrls: true,
-      },
+    },
+    include: {
+      qualityUrls: true,
     },
   });
 
