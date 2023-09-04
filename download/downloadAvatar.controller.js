@@ -8,13 +8,7 @@ const storage = multer.diskStorage({
     cb(null, "public/posters");
   },
   filename: (req, file, cb) => {
-    cb(
-      null,
-      path.parse(file.originalname).name +
-        "-" +
-        Date.now() +
-        path.extname(file.originalname)
-    );
+    cb(null, new Date().toISOString().replace(/:/g, "-") + file.originalname);
   },
 });
 
