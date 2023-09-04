@@ -22,8 +22,6 @@ export const streamingVideo = asyncHandler(async (req, res) => {
     },
   });
 
-  console.log(getFilm);
-
   if (getFilm === null) {
     res.status(400);
     throw new Error("Video not found");

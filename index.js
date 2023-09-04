@@ -36,6 +36,7 @@ import {
   getAllFilmsTitles,
 } from "./video/newVideo.controller.js";
 import { streamingPreview } from "./video/streamingVideo/streamingPreview.js";
+import { chekAllFields } from "./middleware/checkAllFild.js";
 
 const prisma = new PrismaClient();
 const app = express();
@@ -62,6 +63,8 @@ async function main() {
 
   app.use("/films/", streamingVideo);
   app.use("/film/preview/", streamingPreview);
+
+  app.use("/api/getMe/", chekAllFields)
 
   app.post("/api/upload-video-file/", upload.single("file"), downloadVideo);
   app.post("/api/new/", upload.single("file"), addFilms);
