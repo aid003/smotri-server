@@ -91,6 +91,7 @@ export const addFilms = asyncHandler(async (req, res) => {
     });
 
     res.status(201);
+    console.log(addFilmsQuality)
     res.json(addFilmsQuality);
   } catch (error) {
     res.status(400);
