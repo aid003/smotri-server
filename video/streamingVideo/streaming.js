@@ -19,6 +19,9 @@ export const streamingVideo = asyncHandler(async (req, res) => {
           quality: quality,
         },
       },
+      include: {
+        qualityUrls: true,
+      },
     },
   });
 
@@ -28,6 +31,8 @@ export const streamingVideo = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("Video not found");
   }
+
+  console.log(getFilm)
 
   const videoName = getFilm.qualityUrls[0].url;
 
