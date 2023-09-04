@@ -130,8 +130,7 @@ export const downloadPreview = asyncHandler(async (req, res) => {
     res.status(201);
     res.json(preview);
   } catch (error) {
-    res.status(400);
-    throw new Error("Error in load to db");
+    res.status(500).json(error);
   }
 });
 
