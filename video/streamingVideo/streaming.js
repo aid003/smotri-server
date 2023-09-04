@@ -22,14 +22,10 @@ export const streamingVideo = asyncHandler(async (req, res) => {
     },
   });
 
-
-  console.log(getFilm.qualityUrls[0]);
-
   if (getFilm === null) {
     res.status(400);
     throw new Error("Video not found");
   }
-
 
   const videoName = getFilm.qualityUrls[0].url;
 
