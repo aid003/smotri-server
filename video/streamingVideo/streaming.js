@@ -20,6 +20,9 @@ export const streamingVideo = asyncHandler(async (req, res) => {
         },
       },
     },
+    include: {
+      qualityUrls: true,
+    },
   });
 
   if (getFilm === null) {
@@ -27,7 +30,7 @@ export const streamingVideo = asyncHandler(async (req, res) => {
     throw new Error("Video not found");
   }
 
-  console.log(getFilm)
+  console.log(getFilm);
 
   const videoName = getFilm.qualityUrls[0].url;
 
