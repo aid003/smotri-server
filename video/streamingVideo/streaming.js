@@ -19,9 +19,6 @@ export const streamingVideo = asyncHandler(async (req, res) => {
           quality: quality,
         },
       },
-      include: {
-        qualityUrls: true,
-      },
     },
   });
 
