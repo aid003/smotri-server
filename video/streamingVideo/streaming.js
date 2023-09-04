@@ -23,7 +23,7 @@ export const streamingVideo = asyncHandler(async (req, res) => {
   });
 
 
-  console.log(getFilm.qualityUrls);
+  console.log(getFilm.qualityUrls[0]);
 
   if (getFilm === null) {
     res.status(400);
