@@ -11,26 +11,36 @@ export const streamingVideo = asyncHandler(async (req, res) => {
     throw new Error("invalid data");
   }
 
+  // const getFilm = await prisma.video.findFirst({
+  //   select: {
+  //     title: title,
+  //     qualityUrls: {
+  //       where: {
+  //         quality: quality,
+  //       },
+  //     },
+  //   },
+  // });
+
   const getFilm = await prisma.video.findFirst({
-    select: {
+    where: {
       title: title,
       qualityUrls: {
-        where: {
-          quality: quality,
-        },
-      },
+        quality: quality
+      }
     },
     include: {
-      qualityUrls: true,
-    },
-  });
+      qualityUrls: true
+    }
+  })
+
+  console.log(getFilm);
 
   if (getFilm === null) {
     res.status(400);
     throw new Error("Video not found");
   }
 
-  console.log(getFilm);
 
   const videoName = getFilm.qualityUrls[0].url;
 
