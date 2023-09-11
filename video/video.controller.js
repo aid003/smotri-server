@@ -7,10 +7,6 @@ export const downloadVideo = asyncHandler(async (req, res) => {
   const {
     title,
     ratingFilm,
-    novelty,
-    preview,
-    qualityUrls,
-    voiceActing,
     yearCreate,
     countries,
     gendre,

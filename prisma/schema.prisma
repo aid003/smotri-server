@@ -26,6 +26,8 @@ model Video {
   qualityUrls    Urls[]
   TitleSeo       String
   DescriptionSeo String
+  originalName   String?
+  IMDb           String?
   KeywordsSeo    String?
   applicationNameSeo String?
   generatorSeo   String?

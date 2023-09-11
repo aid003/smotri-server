@@ -11,7 +11,6 @@ export const createNewFilmEntryToDb = asyncHandler(async (req, res) => {
     ratingFilm,
     postersUrl,
     novelty,
-    preview,
     yearCreate,
     countries,
     gendre,
@@ -47,9 +46,6 @@ export const createNewFilmEntryToDb = asyncHandler(async (req, res) => {
       ageRestriction: ageRestriction,
       description: description,
       actors: actors,
-      // qualityUrls: { 
-      //   create: { url: "default", quality: "default", voiceActing: "default" },
-      // },
       novelty: novelty,
       duration: duration,
       TitleSeo: TitleSeo,
@@ -98,16 +94,7 @@ export const addFilms = asyncHandler(async (req, res) => {
     throw new Error(`error ${error}`);
   }
 
-  // const deleteInitializationParams = await prisma.video.delete({
-  //   where: {
-  //     title: title
-  //   },
-  //   data: {
-  //     qualityUrls: {
-  //       delete: {}  loading late....
-  //     }
-  //   }
-  // })
+
 });
 
 export const downloadPreview = asyncHandler(async (req, res) => {

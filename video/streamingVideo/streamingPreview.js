@@ -30,7 +30,7 @@ export const streamingPreview = asyncHandler(async (req, res) => {
   const range = req.headers.range || "0";
   const videoPath = `./public/films/${videoName}`;
   const videoSize = fs.statSync(videoPath).size;
-  const chunkSize = 1 * 1e6;
+  const chunkSize = .5 * 1e6;
   const start = Number(range.replace(/\D/g, ""));
   const end = Math.min(start + chunkSize, videoSize - 1);
 

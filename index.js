@@ -37,6 +37,10 @@ import {
 } from "./video/newVideo.controller.js";
 import { streamingPreview } from "./video/streamingVideo/streamingPreview.js";
 import { chekAllFields } from "./middleware/checkAllFild.js";
+import {
+  deleteFilmWithFile,
+  deletePreviewFile,
+} from "./video/videoDelete.controller.js";
 
 const prisma = new PrismaClient();
 const app = express();
@@ -59,12 +63,12 @@ async function main() {
   app.use("/api/change-film-fields/", changeFildsToFilm);
   app.use("/api/upload-films-poster-to-url/", uploadPoster);
 
-  app.use("/api/filmi/quality/", getAllFilmsTitles)
+  app.use("/api/filmi/quality/", getAllFilmsTitles);
 
   app.use("/films/", streamingVideo);
   app.use("/film/preview/", streamingPreview);
 
-  app.use("/api/getMe/", chekAllFields)
+  app.use("/api/getMe/", chekAllFields);
 
   app.post("/api/upload-video-file/", upload.single("file"), downloadVideo);
   app.post("/api/new/", upload.single("file"), addFilms);
@@ -88,6 +92,9 @@ async function main() {
   app.use("/api/login-user-with-login/", loginUserWithEmail);
   app.use("/api/get-user-info", getUserInfo);
 
+  app.use("/api/delete-film-with-file", deleteFilmWithFile);
+  app.use("/api/delete-preview-with-file", deletePreviewFile);
+
   const PORT = 5005;
 
   app.listen(
@@ -107,4 +114,3 @@ main()
     await prisma.$disconnect();
     process.exit(1);
   });
-
